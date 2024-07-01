@@ -1,4 +1,4 @@
-local Server = lib.require('sv_config')
+local Server = lib.load('sv_config')
 local cachedCids = {}
 
 local function getPlayersNearby(coords)
