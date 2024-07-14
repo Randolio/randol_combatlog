@@ -69,3 +69,7 @@ AddEventHandler('playerDropped', function(reason)
     end
     cachedCids[src] = nil
 end)
+
+AddEventHandler('txAdmin:events:serverShuttingDown', function()
+    table.wipe(cachedCids)
+end)
