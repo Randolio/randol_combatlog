@@ -43,9 +43,19 @@ end
 
 local function boardScaleform(data)
     local handle = lib.requestScaleformMovie('mugshot_board_01')
-    if not IsNamedRendertargetRegistered('ID_Text') then RegisterNamedRendertarget('ID_Text', 0) end
-    if not IsNamedRendertargetLinked('prop_police_id_text') then LinkNamedRendertarget('prop_police_id_text') end
-    if IsNamedRendertargetRegistered('ID_Text') then renderId[data.cid] = GetNamedRendertargetRenderId('ID_Text') end
+    local renderTargetName = ('ID_Text_%s'):format(data.cid)
+    local propName = ('prop_police_id_text_%s'):format(data.cid)
+
+    if not IsNamedRendertargetRegistered(renderTargetName) then
+        RegisterNamedRendertarget(renderTargetName, 0)
+    end
+    if not IsNamedRendertargetLinked(propName) then
+        LinkNamedRendertarget(propName)
+    end
+    if IsNamedRendertargetRegistered(renderTargetName) then
+        renderId[data.cid] = GetNamedRendertargetRenderId(renderTargetName)
+    end
+
     CreateThread(function()
         while renderId[data.cid] do
             if #(GetEntityCoords(cache.ped) - vec3(data.coords.x, data.coords.y, data.coords.z)) < 10.0 then
