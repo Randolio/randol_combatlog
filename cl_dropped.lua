@@ -1,5 +1,4 @@
 local temp = {}
-local renderId = {}
 local oxtarget = GetResourceState('ox_target') == 'started'
 
 local function targetLocalEntity(entity, options, distance)
@@ -22,18 +21,18 @@ function clearEverything()
     if next(temp) then
         for cid, data in pairs(temp) do
             if DoesEntityExist(data.entity) then
-                exports['qb-target']:RemoveTargetEntity(data.entity, 'View Information')
+                if oxtarget then
+                    exports.ox_target:removeLocalEntity(data.entity, 'View Information')
+                else
+                    exports['qb-target']:RemoveTargetEntity(data.entity, 'View Information')
+                end
                 DeleteEntity(data.entity)
             end
             if DoesEntityExist(data.prop) then
                 DeleteEntity(data.prop)
             end
-            if DoesEntityExist(data.overlay) then
-                DeleteEntity(data.overlay)
-            end
         end
         table.wipe(temp)
-        table.wipe(renderId)
     end
 end
 
@@ -105,7 +104,6 @@ RegisterNetEvent('randol_combatlog:client:onDropped', function(data)
             DeleteEntity(temp[data.cid].prop)
         end
         temp[data.cid] = nil
-        renderId[data.cid] = nil
     end)
 end)
 
