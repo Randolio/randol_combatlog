@@ -1,5 +1,6 @@
 local temp = {}
 local oxtarget = GetResourceState('ox_target') == 'started'
+local npcTime = 15000 -- For changing how long the ghost person appears (in ms)
 
 local function targetLocalEntity(entity, options, distance)
     if oxtarget then
@@ -91,7 +92,7 @@ RegisterNetEvent('randol_combatlog:client:onDropped', function(data)
         },
     }, 1.2)
 
-    SetTimeout(15000, function()
+    SetTimeout(npcTime, function()
         if DoesEntityExist(temp[data.cid].entity) then
             if oxtarget then
                 exports.ox_target:removeLocalEntity(temp[data.cid].entity, 'View Information')
